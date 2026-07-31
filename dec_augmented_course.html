@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Augmented Course — Supplementing the DEC Learning Experience with AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDF1F0; --panel:#FFFFFF; --ink:#14211F; --slate:#5C6B68;
+    --teal:#0E7B6C; --teal-deep:#0A5A4F; --teal-soft:#E0EFEB; --teal-mid:#8FC6BB;
+    --gold:#B98A2E; --gold-soft:#F5ECD9;
+    --line:#D3DBD8; --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important; animation:none!important;} }
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif; font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header{padding:56px 0 20px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--slate);
+  }
+  h1{
+    font-family:'Archivo',sans-serif; font-weight:900;
+    font-size:clamp(32px,5.2vw,58px); line-height:1.04; letter-spacing:-.02em;
+    margin:14px 0 18px; max-width:22ch;
+  }
+  h1 em{font-style:normal; color:var(--teal);}
+  .standfirst{max-width:64ch; color:var(--slate); font-size:17px;}
+  .standfirst strong{color:var(--ink);}
+  .supp-test{
+    margin-top:22px; display:inline-block;
+    background:var(--gold-soft); border:1px solid #E3D3AC; border-radius:10px;
+    padding:12px 16px; font-size:14.5px; max-width:60ch;
+  }
+  .supp-test b{color:var(--gold);}
+
+  section{padding:30px 0 56px;}
+  h2{font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(23px,3vw,30px); letter-spacing:-.015em; margin-bottom:8px;}
+  .sec-sub{color:var(--slate); max-width:68ch; margin-bottom:26px; font-size:15px;}
+
+  /* ---------- stage cards ---------- */
+  .stages{display:grid; gap:16px;}
+  .stagecard{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; display:grid; grid-template-columns:200px 1fr 1fr 1fr; gap:20px;
+  }
+  @media (max-width:900px){ .stagecard{grid-template-columns:1fr;} }
+  .stagecard .id h3{font-family:'Archivo',sans-serif; font-weight:800; font-size:19px;}
+  .stagecard .id .step{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--slate); display:block; margin-bottom:4px;
+  }
+  .stagecard .why{
+    margin-top:10px; font-size:12.5px; color:var(--slate); line-height:1.5;
+    border-left:3px solid var(--line); padding-left:10px;
+  }
+  .stagecard .why .chip{
+    display:inline-block; cursor:help; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    background:var(--paper); border-radius:5px; padding:2px 6px; color:var(--slate); position:relative;
+  }
+  .beat .lab{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.13em;
+    text-transform:uppercase; display:block; margin-bottom:5px;
+  }
+  .beat p{font-size:14px;}
+  .beat.stays .lab{color:var(--slate);}
+  .beat.inject .lab{color:var(--teal);}
+  .beat.inject{background:var(--teal-soft); border-radius:10px; padding:12px 14px; margin:-12px -14px; }
+  @media (max-width:900px){ .beat.inject{margin:0;} }
+  .beat.exp .lab{color:var(--gold);}
+  .unlock{
+    grid-column:1 / -1; border-top:1px dashed var(--line); padding-top:12px;
+    font-size:13.5px; color:var(--teal-deep);
+  }
+  .unlock b::before{content:"⚡ "; }
+
+  /* ---------- assessment loop infographic ---------- */
+  .loopwrap{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:30px 26px 26px;
+  }
+  .loop{
+    display:grid; grid-template-columns:1fr 60px 1fr 60px 1fr; align-items:stretch; gap:0;
+  }
+  @media (max-width:820px){
+    .loop{grid-template-columns:1fr;}
+    .arrow{transform:rotate(90deg); margin:6px auto; }
+  }
+  .node{
+    border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:8px;
+  }
+  .node h4{font-family:'Archivo',sans-serif; font-weight:800; font-size:17px;}
+  .node ul{list-style:none; font-size:13.5px; display:grid; gap:5px;}
+  .node li{padding-left:16px; position:relative;}
+  .node li::before{content:"·"; position:absolute; left:4px; font-weight:700;}
+  .node .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; align-self:flex-start; border-radius:5px; padding:3px 8px;
+  }
+  .mock{background:var(--teal-soft); border:1px solid var(--teal-mid);}
+  .mock .tag{background:var(--teal); color:#fff;}
+  .main{background:#fff; border:2px solid var(--ink);}
+  .main .tag{background:var(--ink); color:#fff;}
+  .cred{background:var(--gold-soft); border:1px solid #E3D3AC;}
+  .cred .tag{background:var(--gold); color:#fff;}
+  .arrow{
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:20px; color:var(--slate);
+  }
+  .loopback{
+    margin-top:14px; display:flex; align-items:center; gap:10px;
+    font-size:13.5px; color:var(--teal-deep);
+    background:var(--teal-soft); border-radius:10px; padding:12px 14px;
+  }
+  .loopback .arr{font-family:'IBM Plex Mono',monospace; font-size:16px;}
+  .loop-note{
+    margin-top:16px; font-size:13.5px; color:var(--slate); max-width:74ch;
+  }
+  .loop-note b{color:var(--ink);}
+
+  /* ---------- constraint chart ---------- */
+  .chartwrap{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px;
+  }
+  .chart{display:grid; gap:18px;}
+  .crow{display:grid; grid-template-columns:230px 1fr; gap:16px; align-items:center;}
+  @media (max-width:760px){ .crow{grid-template-columns:1fr;} }
+  .crow .clabel{font-size:14px;}
+  .crow .clabel b{font-family:'Archivo',sans-serif; font-size:14.5px; display:block;}
+  .crow .clabel span{font-size:12.5px; color:var(--slate);}
+  .bars{display:grid; gap:6px;}
+  .bar{
+    height:22px; border-radius:5px; position:relative; cursor:help;
+    display:flex; align-items:center;
+  }
+  .bar i{
+    display:block; height:100%; border-radius:5px; min-width:34px;
+  }
+  .bar.human i{background:#B9C6C2; width:var(--w);}
+  .bar.ai i{background:var(--teal); width:var(--w);}
+  .bar em{
+    font-style:normal; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    margin-left:8px; color:var(--slate); white-space:nowrap;
+  }
+  .bar.ai em{color:var(--teal-deep);}
+  .chart-legend{
+    display:flex; gap:18px; margin:4px 0 22px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--slate);
+  }
+  .chart-legend i{width:20px; height:11px; border-radius:3px; display:inline-block; margin-right:6px; vertical-align:-1px;}
+  .chart-disclaimer{
+    margin-top:18px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--slate);
+    border-top:1px dashed var(--line); padding-top:12px;
+  }
+
+  /* ---------- honest section ---------- */
+  .honest{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media (max-width:760px){ .honest{grid-template-columns:1fr;} }
+  .hcard{
+    background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--teal);
+    border-radius:10px; padding:16px 18px; font-size:14px;
+  }
+  .hcard b{font-family:'Archivo',sans-serif;}
+  .hcard.warn{border-left-color:var(--gold);}
+
+  /* ---------- thesis band ---------- */
+  .thesis{
+    background:var(--ink); color:#EFF4F2; border-radius:var(--radius);
+    padding:34px; margin:8px 0 56px;
+  }
+  .thesis p{
+    font-family:'Archivo',sans-serif; font-weight:800; letter-spacing:-.015em;
+    font-size:clamp(19px,2.7vw,28px); line-height:1.28; max-width:38ch;
+  }
+  .thesis em{font-style:normal; color:#6FC7B6;}
+
+  footer{
+    border-top:1px solid var(--line); padding:24px 0 56px;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--slate); line-height:1.8;
+  }
+
+  /* floating tooltip */
+  .tip{display:none;}
+  #floatTip{
+    position:fixed; z-index:100; max-width:270px;
+    background:var(--ink); color:#EFF4F2;
+    font-family:'Inter',sans-serif; font-size:12.5px; line-height:1.5;
+    padding:10px 12px; border-radius:10px;
+    box-shadow:0 8px 24px rgba(20,33,31,.28);
+    opacity:0; pointer-events:none; transform:translateY(4px);
+    transition:opacity .15s, transform .15s;
+  }
+  #floatTip.show{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <p class="eyebrow">DIGIB558 · Class discussion briefing · Companion to the priority audit</p>
+  <h1>The augmented course: supplementing the learning experience <em>with AI, not replacing it</em></h1>
+  <p class="standfirst">The DEC course teaches professionals to be <strong>augmented, not dependent</strong> — to use AI where it removes constraints and keep judgement where it belongs. This briefing applies that same distinction to the course itself: five AI injections that supplement a human-designed learning experience, each one dissolving a cost constraint that made the current design a rational compromise.</p>
+  <div class="supp-test"><b>The supplement test.</b> Every injection below must pass one question: does it help the learner do the work, or do the work for the learner? Anything that fails is substitution — the dependency the course itself warns against.</div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ THE PATTERN ============ -->
+  <section id="pattern">
+    <h2>Five injections, one repeating pattern</h2>
+    <p class="sec-sub">Each stage keeps its human core, adds one AI capability, and changes what the learner experiences. The final line names the constraint that dissolved — the reason this only became affordable now.</p>
+
+    <div class="stages">
+
+      <article class="stagecard">
+        <div class="id">
+          <span class="step">Stage 1 · Content</span><h3>Freshness</h3>
+          <p class="why">Why inject: <span class="chip" tabindex="0">evidence<span class="tip">Completion audit (Jul 2026): takeaway PDF diverged from on-screen content; a duplicated scenario; guest interviews ~17 months old, describing AI agents as forthcoming.</span></span> materials had drifted from screen and from 2026.</p>
+        </div>
+        <div class="beat stays"><span class="lab">What stays</span><p>The expert-authored curriculum, frameworks, and guest interviews — the human knowledge is the product.</p></div>
+        <div class="beat inject"><span class="lab">AI injection</span><p>Single-source publishing (one master doc → video script + PDF) and an AI freshness audit that re-reads every claim on a set cadence, flagging dated ones and stamping context notes on older recordings.</p></div>
+        <div class="beat exp"><span class="lab">Supplemented experience</span><p>Material that is current in a field that dates monthly — and a course that visibly practises the source-checking it teaches.</p></div>
+        <p class="unlock"><b>Constraint dissolved:</b> re-verifying every claim monthly was an editorial payroll no lean alliance could carry. AI makes freshness a property, not a project.</p>
+      </article>
+
+      <article class="stagecard">
+        <div class="id">
+          <span class="step">Stage 2 · Practice</span><h3>Rehearsal</h3>
+          <p class="why">Why inject: <span class="chip" tabindex="0">evidence<span class="tip">Completion audit: the Module 3 fact-check is a worked example the course performs for the learner; reflective prompts are unassessed and skippable — zero required practice of the core skill.</span></span> the learner could finish without ever performing the skill.</p>
+        </div>
+        <div class="beat stays"><span class="lab">What stays</span><p>The fact-checking exercise concept and the reflective prompts — the pedagogy was right; only the delivery was passive.</p></div>
+        <div class="beat inject"><span class="lab">AI injection</span><p>A Socratic agent hands the learner the flawed output and scaffolds — never answers. The module advances only after the learner makes a call: verifiable or not, what would you check, what is the corrective prompt?</p></div>
+        <div class="beat exp"><span class="lab">Supplemented experience</span><p>You leave Module 3 having caught a hallucination yourself, at your own depth — practitioners move fast, novices get more scaffolding.</p></div>
+        <p class="unlock"><b>Constraint dissolved:</b> one-on-one Socratic coaching used to cost a tutor per learner. An agent gives every learner that tutor at near-zero marginal cost.</p>
+      </article>
+
+      <article class="stagecard">
+        <div class="id">
+          <span class="step">Stage 3 · Assessment</span><h3>Mock &amp; Main</h3>
+          <p class="why">Why inject: <span class="chip" tabindex="0">evidence<span class="tip">Completion audit: 3–6 MCQs per module, definitional recall, 80% pass, unlimited retakes — a gate that cannot be failed. Item reuse made retake limits pointless; static item banks were expensive to author.</span></span> the current quiz is a cost decision, not negligence — small static item banks were all human authoring could afford.</p>
+        </div>
+        <div class="beat stays"><span class="lab">What stays</span><p>The module structure, and LEAD plus the course's own frameworks — now serving as the grading rubric itself.</p></div>
+        <div class="beat inject"><span class="lab">AI injection</span><p>Unlimited <b>mock tests</b> with the AI companion (practice, feedback, no stakes) and a gated <b>main test</b> — two attempts per 24 hours, each a freshly generated variant graded by AI against the rubric.</p></div>
+        <div class="beat exp"><span class="lab">Supplemented experience</span><p>Practise until ready, then demonstrate. Failing sends you to a mock with targeted feedback — not a RETAKE button.</p></div>
+        <p class="unlock"><b>Constraint dissolved:</b> marking open-ended judgement and authoring fresh items were both expensive — which is <em>why</em> the unfailable quiz existed. AI grading and variant generation remove both costs at once.</p>
+      </article>
+
+      <article class="stagecard">
+        <div class="id">
+          <span class="step">Stage 4 · Issuance</span><h3>Credential</h3>
+          <p class="why">Why inject: <span class="chip" tabindex="0">evidence<span class="tip">Current certificate is verified by an ID string on DEC's server, issued on the quiz basis above. The course's own Module 4 expert notes a certificate doesn't mean readiness.</span></span> the certificate was a receipt, verified only by DEC's server.</p>
+        </div>
+        <div class="beat stays"><span class="lab">What stays</span><p>The DEC × University of Waikato credential and its brand weight.</p></div>
+        <div class="beat inject"><span class="lab">AI injection</span><p>A signed, learner-held credential (Open Badges 3.0 / W3C VC) that carries the evidence of the AI-graded main-test performance inside it.</p></div>
+        <div class="beat exp"><span class="lab">Supplemented experience</span><p>Proof you hold, verifiable anywhere without asking DEC — and it now attests something that was actually demonstrated.</p></div>
+        <p class="unlock"><b>Constraint dissolved:</b> a signal worth signing. Cryptography was always available; a demonstrated competency to sign is what the assessment injection creates.</p>
+      </article>
+
+      <article class="stagecard">
+        <div class="id">
+          <span class="step">Stage 5 · After</span><h3>Career value</h3>
+          <p class="why">Why inject: <span class="chip" tabindex="0">evidence<span class="tip">1EdTech 2026 ecosystem survey: only ~51% of credential issuers connect directly to employers — the education-to-employment bridge is the ecosystem's weak span.</span></span> the badge lived on a profile; hiring systems couldn't read it.</p>
+        </div>
+        <div class="beat stays"><span class="lab">What stays</span><p>The promise the learner enrolled for — that literacy translates to employability.</p></div>
+        <div class="beat inject"><span class="lab">AI injection</span><p>Machine-readable skills metadata (CLR-style learner records) that AI skills-matching engines in hiring platforms can read and map to roles.</p></div>
+        <div class="beat exp"><span class="lab">Supplemented experience</span><p>The credential participates in hiring decisions instead of decorating a profile.</p></div>
+        <p class="unlock"><b>Constraint dissolved:</b> the certificate speaks machine — skills matching that once required human recruiters reading PDFs now happens at platform scale.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ ASSESSMENT LOOP ============ -->
+  <section id="loop">
+    <h2>The assessment loop: unlimited practice, gated proof</h2>
+    <p class="sec-sub">The design that makes “Literacy for All” and a meaningful certificate compatible: the mock test absorbs all the friction-free access, the main test carries all the meaning.</p>
+
+    <div class="loopwrap">
+      <div class="loop">
+        <div class="node mock">
+          <span class="tag">Mock test · unlimited</span>
+          <h4>Practice space</h4>
+          <ul>
+            <li>AI companion scaffolds Socratically</li>
+            <li>Rich feedback on every attempt</li>
+            <li>No stakes, no record, no limit</li>
+            <li>Free forever — the access mission lives here</li>
+          </ul>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node main">
+          <span class="tag">Main test · 2 per 24h</span>
+          <h4>Proving ground</h4>
+          <ul>
+            <li>Fresh AI-generated variant each attempt</li>
+            <li>Find, fix, justify embedded flaws</li>
+            <li>AI-graded against the LEAD rubric</li>
+            <li>Same skills tested, different surface — memorisation can’t pass it</li>
+          </ul>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node cred">
+          <span class="tag">On pass</span>
+          <h4>Signed credential</h4>
+          <ul>
+            <li>Carries the graded evidence inside it</li>
+            <li>Learner-held, verifiable anywhere</li>
+            <li>Readable by hiring platforms</li>
+          </ul>
+        </div>
+      </div>
+      <div class="loopback"><span class="arr">↩</span><span><b>On fail:</b> targeted feedback routes the learner back to a mock test aimed at the specific gap — the failure becomes the next lesson, not a wait for the timer.</span></div>
+      <p class="loop-note"><b>Why the attempt limit has teeth:</b> a cooldown on a memorisable test only limits speed — wait, remember, grind through. Variant generation is what gives the limit meaning: the test you retake is not the test you failed. The limit and the variants are two halves of one mechanism; either alone fails. (The exact numbers — two attempts, 24 hours — are tuning parameters; the structure is the design.)</p>
+    </div>
+  </section>
+
+  <!-- ============ CONSTRAINT CHART ============ -->
+  <section id="chart">
+    <h2>Why now: the cost constraints that dissolved</h2>
+    <p class="sec-sub">Each injection was pedagogically obvious for decades. What changed in 2025–26 is the cost of the human-equivalent version. Relative effort to deliver each capability at “for All” scale:</p>
+
+    <div class="chartwrap">
+      <div class="chart-legend">
+        <span><i style="background:#B9C6C2"></i>Human-only delivery</span>
+        <span><i style="background:var(--teal)"></i>With AI injection</span>
+      </div>
+      <div class="chart">
+        <div class="crow">
+          <div class="clabel"><b>Monthly content re-verification</b><span>every claim, every module, every cycle</span></div>
+          <div class="bars">
+            <div class="bar human" tabindex="0" style="--w:92%"><i></i><em>editorial team, ongoing</em></div>
+            <div class="bar ai" tabindex="0" style="--w:12%"><i></i><em>overnight audit + human review of flags</em></div>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="clabel"><b>1:1 Socratic coaching</b><span>guided practice for every learner</span></div>
+          <div class="bars">
+            <div class="bar human" tabindex="0" style="--w:100%"><i></i><em>a tutor per learner — never feasible</em></div>
+            <div class="bar ai" tabindex="0" style="--w:18%"><i></i><em>agent build + oversight, near-zero marginal</em></div>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="clabel"><b>Marking open-ended judgement</b><span>process-graded, with feedback</span></div>
+          <div class="bars">
+            <div class="bar human" tabindex="0" style="--w:88%"><i></i><em>human markers at volume</em></div>
+            <div class="bar ai" tabindex="0" style="--w:15%"><i></i><em>AI rubric-grading + human moderation sample</em></div>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="clabel"><b>Fresh test items per attempt</b><span>non-memorisable retakes</span></div>
+          <div class="bars">
+            <div class="bar human" tabindex="0" style="--w:80%"><i></i><em>large authored item banks</em></div>
+            <div class="bar ai" tabindex="0" style="--w:10%"><i></i><em>variant generation from one rubric</em></div>
+          </div>
+        </div>
+      </div>
+      <p class="chart-disclaimer">Conceptual illustration of relative effort — analyst judgement, not measured cost data. The claim is directional: in each row, the human-only version priced the capability out of a free course; the AI version does not.</p>
+    </div>
+  </section>
+
+  <!-- ============ KEEPING IT HONEST ============ -->
+  <section id="honest">
+    <h2>Keeping the augmentation honest</h2>
+    <p class="sec-sub">Design principles, not caveats — the same standards the course teaches, applied to the course.</p>
+    <div class="honest">
+      <div class="hcard warn"><b>The dependency risk applies to us first.</b> An AI tutor that does the exercise for the student recreates the worked-example flaw with fancier technology. The companion scaffolds and questions; it never answers. This is the supplement test, enforced.</div>
+      <div class="hcard"><b>Humans moderate the grading.</b> AI marks the main test; a human sample audits the marking. The augmented course keeps judgement in the loop — the same posture it teaches professionals.</div>
+      <div class="hcard"><b>Disclosure, dogfooded.</b> Learners are told when AI assesses them and how — LEAD’s own transparency criterion applied to the institution that teaches it.</div>
+      <div class="hcard warn"><b>The critique survives, reframed.</b> The current unfailable quiz was a rational cost decision, not negligence: small static item banks were what human authoring could afford. The injections don’t accuse the design — they dissolve the constraint that produced it. Evidence base: single-learner completion audit, July 2026.</div>
+    </div>
+  </section>
+
+  <!-- ============ THESIS ============ -->
+  <div class="thesis">
+    <p>The course teaches professionals to be augmented, not dependent. These five injections ask the course to <em>practise its own lesson</em> — AI where constraints were, humans where judgement is.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Companion document to “DEC Learner Journey — Technology Priority Briefing.” Sources: first-hand completion audit of DECx × University of Waikato “AI Literacy for All” (Jul 2026, n=1) · EDUCAUSE Horizon Report 2026 · 1EdTech Digital Credential Survey 2026 · Gartner agentic-AI projections via 2026 secondary reporting · DEC Executive Briefing #022 (Agentic AI Playbook).<br>
+    Prepared for DIGIB558 class discussion · Not a submission · Chart is conceptual, not measured data.
+  </div>
+</footer>
+
+<script>
+  const ft = document.createElement('div');
+  ft.id = 'floatTip'; ft.setAttribute('role','tooltip');
+  document.body.appendChild(ft);
+  function showTip(target, html){
+    ft.innerHTML = html; ft.classList.add('show');
+    const r = target.getBoundingClientRect();
+    const tw = ft.offsetWidth, th = ft.offsetHeight, gap=10, pad=8;
+    let x = r.left + r.width/2 - tw/2;
+    x = Math.max(pad, Math.min(x, window.innerWidth - tw - pad));
+    let y = r.top - th - gap;
+    if(y < pad) y = r.bottom + gap;
+    ft.style.left = x+'px'; ft.style.top = y+'px';
+  }
+  function hideTip(){ ft.classList.remove('show'); }
+  document.querySelectorAll('.chip').forEach(el=>{
+    const src = el.querySelector('.tip');
+    if(!src) return;
+    const html = src.innerHTML;
+    el.addEventListener('mouseenter', ()=>showTip(el, html));
+    el.addEventListener('mouseleave', hideTip);
+    el.addEventListener('focus', ()=>showTip(el, html));
+    el.addEventListener('blur', hideTip);
+  });
+  window.addEventListener('scroll', hideTip, {passive:true});
+  window.addEventListener('resize', hideTip);
+</script>
+</body>
+</html>
